@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres
+    container_name: coffee-shop
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: testpass123
+      POSTGRES_DB: mydb
+    ports:
+      - "5353:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - nest_network
+
+  nestjs:
+    image: node
+    container_name: coffee-shop-app
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      NODE_ENV: ${NODE_ENV:-dev}
+
+    depends_on:
+      - postgres
+    networks:
+      - nest_network
+
+    command: sh -c "npm install && npx prisma generate && npx prisma migrate deploy && npx prisma db seed && npm run start:dev"
+
+networks:
+  nest_network:
+
+volumes:
+  pgdata:
