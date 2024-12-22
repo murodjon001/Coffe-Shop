@@ -12,3 +12,130 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Administrator{
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name      String  
+  surname   String
+  phone     String    @unique
+  password  String
+}
+
+model Menu {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  categories        Category[]
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title     String    @unique
+  image     String?
+  isActive  Boolean   @default(true)
+
+  menuId          String
+  menu            Menu      @relation(fields: [menuId], references: [id])
+
+  products        Product[]
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title           String
+  price           Float
+  discountPercent Float    @default(0)
+  description     String?
+  image           String?
+  isPurchasable   String?
+
+  categoryId      String
+  category        Category      @relation(fields: [categoryId], references: [id])
+
+  orderProducts       OrderProduct[]
+  basketItems         BasketItem[]
+ 
+  @@unique([categoryId, title], name: "uniqueProduct")
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name      String
+  surname   String
+  phone     String      
+  email     String      @unique
+  password  String  
+  otp            String?
+  otpExpired     DateTime?
+  timesUsage     Int       @default(0)
+
+  orders            Order[]
+  basket            Basket?
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clientId        String
+  client          Client        @relation(fields: [clientId], references: [id])
+  
+  orderProducts     OrderProduct[]
+}
+
+model OrderProduct {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  quantity         Int
+
+  productId        String
+  product          Product        @relation(fields: [productId], references: [id])
+  
+  orderId        String
+  order          Order        @relation(fields: [orderId], references: [id])
+}
+
+
+model Basket {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clientId      String    @unique
+  client        Client    @relation(fields: [clientId], references: [id])
+
+  basketItems     BasketItem[]
+}
+
+model BasketItem {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  quantity      Int
+
+  basketId      String    @unique
+  basket        Basket    @relation(fields: [basketId], references: [id])
+
+  productId     String
+  product       Product     @relation(fields: [productId], references: [id])
+
+  @@unique([productId, basketId], name: "uniqueBasketItem")
+  @@index([basketId])
+}
