@@ -76,11 +76,14 @@ model Client {
   name      String
   surname   String
   phone     String      
+  avatar    String?
   email     String      @unique
   password  String  
-  otp            String?
+  otp            Int?
   otpExpired     DateTime?
   timesUsage     Int       @default(0)
+
+  isConfirmed     Boolean     @default(false)
 
   orders            Order[]
   basket            Basket?
