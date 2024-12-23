@@ -5,6 +5,9 @@ import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { SecurityModule } from './infrastructure/security/security.module';
+import { AdministratorModel } from './modules/administrator/administrator.module';
+import { ClientModel } from './modules/client/client.module';
 
 @Module({
   controllers: [AppController],
@@ -30,6 +33,9 @@ import { ThrottlerModule } from '@nestjs/throttler';
       },
     ]), // this module use race limiter(Limits requests to the API)
     PrismaModule,
+    SecurityModule,
+    AdministratorModel,
+    ClientModel,
   ],
 })
 export class AppModule {}

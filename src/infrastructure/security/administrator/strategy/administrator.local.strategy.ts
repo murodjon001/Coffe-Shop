@@ -30,7 +30,7 @@ export class AdministratorLocalStrategy extends PassportStrategy(
     if (user) return user;
 
     throw new CustomHttpException(
-      'Director not found',
+      'Administrator not found',
       SystemError.INVALID_CREDENTIALS,
       HttpStatus.UNAUTHORIZED,
     );

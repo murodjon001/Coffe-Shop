@@ -48,7 +48,9 @@ export class ClientSecurityRepository {
         return null;
       }
 
-      return new ClientTokenEntity({ ...client });
+      const { password, ...other } = client;
+
+      return new ClientTokenEntity({ ...other });
     } catch (err) {
       this.logger.error(err);
 

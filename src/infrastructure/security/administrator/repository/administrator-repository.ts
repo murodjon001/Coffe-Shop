@@ -46,7 +46,9 @@ export class AdministratorSecurityRepository {
         return null;
       }
 
-      return new AdministratorTokenEntity({ ...administrator });
+      const { password, ...other } = administrator;
+
+      return new AdministratorTokenEntity({ ...other });
     } catch (err) {
       this.logger.error(err);
 

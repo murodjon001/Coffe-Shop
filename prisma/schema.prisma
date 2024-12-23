@@ -81,7 +81,6 @@ model Client {
   password  String  
   otp            Int?
   otpExpired     DateTime?
-  timesUsage     Int       @default(0)
 
   isConfirmed     Boolean     @default(false)
 
