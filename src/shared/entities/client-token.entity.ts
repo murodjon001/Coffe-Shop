@@ -11,7 +11,7 @@ export class ClientTokenEntity extends ClientBaseEntity {
   constructor(params: IClientTokenEntity) {
     super(params);
 
-    this.password = params.password;
+    this.password = PasswordVo.fromHash(params.password);
     this.otp = params.otp;
     this.otpExpired = params.otpExpired;
     this.timesUsage = params.timesUsage;

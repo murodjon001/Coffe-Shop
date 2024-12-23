@@ -1,17 +1,17 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { CLIENT_CONSTANTS } from '../../jwt-constants';
-import { ClientRepository } from 'src/infrastructure/prisma/repositories/clients/client-repository';
 import { CustomHttpException } from 'src/infrastructure/errors/custom-http-exception';
 import { SystemError } from 'src/shared/system-error.enum';
+import { ClientSecurityRepository } from '../repository/client-repository';
+import { CLIENT_CONSTANTS } from '../../jwt-constants';
 
 @Injectable()
 export class ClientJwtStrategy extends PassportStrategy(
   Strategy,
   'client-jwt',
 ) {
-  constructor(private readonly repository: ClientRepository) {
+  constructor(private readonly repository: ClientSecurityRepository) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -24,7 +24,7 @@ export class ClientJwtStrategy extends PassportStrategy(
 
     if (!client) {
       throw new CustomHttpException(
-        'Unauthorized',
+        'Client not found',
         SystemError.UNAUTHORIZED,
         HttpStatus.UNAUTHORIZED,
       );

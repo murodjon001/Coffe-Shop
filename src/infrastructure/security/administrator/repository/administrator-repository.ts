@@ -1,54 +1,52 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CustomHttpException } from 'src/infrastructure/errors/custom-http-exception';
 import { PrismaService } from 'src/infrastructure/prisma/prisma.service';
-import { ClientTokenEntity } from 'src/shared/entities/client-token.entity';
+import { AdministratorTokenEntity } from 'src/shared/entities/administrator-token.entity';
 import { SystemError } from 'src/shared/system-error.enum';
 
 @Injectable()
-export class ClientSecurityRepository {
-  private readonly logger = new Logger(ClientSecurityRepository.name);
+export class AdministratorSecurityRepository {
+  private readonly logger = new Logger(AdministratorSecurityRepository.name);
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async getClientByEmail(email: string) {
+  async getAdministratorByPhone(phone: string) {
     try {
-      const client = await this.prisma.client.findUnique({
+      const administrator = await this.prisma.administrator.findUnique({
         where: {
-          email: email,
-          isConfirmed: true,
+          phone: phone,
         },
       });
 
-      if (!client) {
+      if (!administrator) {
         return null;
       }
 
-      return new ClientTokenEntity({ ...client });
+      return new AdministratorTokenEntity({ ...administrator });
     } catch (err) {
       this.logger.error(err);
 
       throw new CustomHttpException(
-        'Error while getClientByEmailAndOtp',
+        'Error while getAdministratorByPhone',
         SystemError.INTERNAL_SERVER_ERROR,
         500,
       );
     }
   }
 
-  async getClientById(id: string) {
+  async getAdministratorById(id: string) {
     try {
-      const client = await this.prisma.client.findUnique({
+      const administrator = await this.prisma.administrator.findUnique({
         where: {
           id: id,
-          isConfirmed: true,
         },
       });
 
-      if (!client) {
+      if (!administrator) {
         return null;
       }
 
-      return new ClientTokenEntity({ ...client });
+      return new AdministratorTokenEntity({ ...administrator });
     } catch (err) {
       this.logger.error(err);
 
