@@ -1,3 +1,4 @@
+import { UpdatePersonalDataDto } from 'src/modules/client/client-context/dto/update-personal-data.dto';
 import { IClientBaseEntity } from '../interfaces/client-base-entity.interface';
 import { BaseEntity } from './base-entity';
 

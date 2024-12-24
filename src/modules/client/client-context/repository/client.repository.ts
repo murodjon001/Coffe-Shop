@@ -46,9 +46,7 @@ export class ClientRepository {
         },
       });
 
-      const { password, ...other } = updatedClient;
-
-      return new ClientEntity({ ...other });
+      return new ClientEntity({ ...updatedClient });
     } catch (err) {
       throw new CustomHttpException(
         `Error while updatePersonalDataClient: ${err}`,
@@ -82,26 +80,19 @@ export class ClientRepository {
     }
   }
 
-  async updateEmail(email: string) {
+  async confirmClient(email: string) {
     try {
-      const otp = generateOtp();
-
       await this.prisma.client.update({
-        where: {
-          email,
-        },
+        where: { email },
         data: {
-          otp,
-          otpExpired: new Date(), // + 1 minute
-          email,
-          isConfirmed: false,
+          isConfirmed: true,
+          otp: null,
+          otpExpired: null,
         },
       });
-
-      return otp;
     } catch (err) {
       throw new CustomHttpException(
-        `Error while updateEmail: ${err}`,
+        `Error while confirmClient: ${err}`,
         SystemError.INTERNAL_SERVER_ERROR,
         500,
       );
@@ -116,14 +107,44 @@ export class ClientRepository {
         },
       });
 
+      if (!client) {
+        return null;
+      }
+
       const { password, ...other } = client;
 
       const pass = PasswordVo.fromHash(password);
 
-      return new ClientEntity({ ...other, password: pass });
+      return new ClientEntity({ ...other }).withPassword(pass);
     } catch (err) {
       throw new CustomHttpException(
-        `Error while findByEmail: ${err}`,
+        `Error while findById: ${err}`,
+        SystemError.INTERNAL_SERVER_ERROR,
+        500,
+      );
+    }
+  }
+
+  async findByOtp(otp: number, email: string) {
+    try {
+      const client = await this.prisma.client.findUnique({
+        where: {
+          email,
+          otp,
+          otpExpired: {
+            gte: new Date(),
+          },
+        },
+      });
+
+      if (!client) {
+        return null;
+      }
+
+      return new ClientEntity({ ...client });
+    } catch (err) {
+      throw new CustomHttpException(
+        `Error while findByOtp: ${err}`,
         SystemError.INTERNAL_SERVER_ERROR,
         500,
       );
@@ -139,9 +160,7 @@ export class ClientRepository {
         },
       });
 
-      const { password, ...other } = updatedClient;
-
-      return new ClientEntity({ ...other });
+      return new ClientEntity({ ...updatedClient });
     } catch (err) {
       throw new CustomHttpException(
         `Error while updatePassword: ${err}`,
@@ -159,32 +178,7 @@ export class ClientRepository {
         },
       });
 
-      const { password, ...other } = client;
-
-      return new ClientEntity({ ...other });
-    } catch (err) {
-      throw new CustomHttpException(
-        `Error while findByEmail: ${err}`,
-        SystemError.INTERNAL_SERVER_ERROR,
-        500,
-      );
-    }
-  }
-
-  async isAlreadyExistEmail(email: string, id: string) {
-    try {
-      const isExistEmail = await this.prisma.client.findFirst({
-        where: {
-          email,
-          id: { not: id },
-        },
-      });
-
-      if (isExistEmail) {
-        return true;
-      }
-
-      return false;
+      return new ClientEntity({ ...client });
     } catch (err) {
       throw new CustomHttpException(
         `Error while findByEmail: ${err}`,

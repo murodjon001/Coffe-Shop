@@ -8,6 +8,7 @@ import { ClientService } from './client-context/client.service';
 import { ClientLocalStrategy } from 'src/infrastructure/security/client/strategy/client.local.strategy';
 import { ClientJwtStrategy } from 'src/infrastructure/security/client/strategy/client.jwt.strategy';
 import { ClientSecurityRepository } from 'src/infrastructure/security/client/repository/client-repository';
+import { ClientRepository } from './client-context/repository/client.repository';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ClientSecurityRepository } from 'src/infrastructure/security/client/rep
     ClientLocalStrategy,
     ClientJwtStrategy,
     ClientSecurityRepository,
+    ClientRepository,
   ],
 })
 export class ClientModel {}
