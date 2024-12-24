@@ -9,10 +9,16 @@ import {
 } from 'src/infrastructure/security/jwt-constants';
 import { ClientTokenEntity } from 'src/shared/entities/client-token.entity';
 import { SystemError } from 'src/shared/system-error.enum';
+import { ClientRepository } from './repository/client.repository';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class ClientService {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly repository: ClientRepository,
+    private readonly mailerService: MailerService,
+  ) {}
 
   async login(entity: ClientTokenEntity): Promise<IToken> {
     const payload: ITokenPayload = this.getPayload(entity.id);

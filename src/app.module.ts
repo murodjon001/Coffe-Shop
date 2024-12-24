@@ -8,6 +8,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { SecurityModule } from './infrastructure/security/security.module';
 import { AdministratorModel } from './modules/administrator/administrator.module';
 import { ClientModel } from './modules/client/client.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   controllers: [AppController],
@@ -32,6 +33,14 @@ import { ClientModel } from './modules/client/client.module';
         limit: 100,
       },
     ]), // this module use race limiter(Limits requests to the API)
+    MailerModule.forRoot({
+      transport: {
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASSWORD_EMAIL,
+        },
+      },
+    }), // this module for send sms to gmail
     PrismaModule,
     SecurityModule,
     AdministratorModel,
