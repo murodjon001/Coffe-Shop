@@ -9,6 +9,7 @@ import { SecurityModule } from './infrastructure/security/security.module';
 import { AdministratorModel } from './modules/administrator/administrator.module';
 import { ClientModel } from './modules/client/client.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { SuperUserModel } from './modules/super-user/super-user.module';
 
 @Module({
   controllers: [AppController],
@@ -48,6 +49,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     SecurityModule,
     AdministratorModel,
     ClientModel,
+    SuperUserModel,
   ],
 })
 export class AppModule {}

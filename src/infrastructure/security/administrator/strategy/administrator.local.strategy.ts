@@ -3,9 +3,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { CustomHttpException } from 'src/infrastructure/errors/custom-http-exception';
 import { AdministratorSecurityRepository } from '../repository/administrator-repository';
-import { normalizePhone } from 'src/shared/utils/normalize-phone';
 import { SystemError } from 'src/shared/system-error.enum';
 import { AdministratorTokenEntity } from 'src/shared/entities/administrator-token.entity';
+import { Request } from 'express';
 
 @Injectable()
 export class AdministratorLocalStrategy extends PassportStrategy(
@@ -13,19 +13,19 @@ export class AdministratorLocalStrategy extends PassportStrategy(
   'administrator-local-guard',
 ) {
   constructor(private readonly repository: AdministratorSecurityRepository) {
-    super({ usernameField: 'phone' });
+    super({ usernameField: 'email', passReqToCallback: true });
   }
 
-  async validate(phone: string, password: string): Promise<any> {
-    const user = await this.getAndCheckAdministratorIsValid(phone);
+  async validate(req: Request, email: string, password: string): Promise<any> {
+    const shopId = req.params.shopId;
+
+    const user = await this.getAndCheckAdministratorIsValid(email, shopId);
 
     return await this.compareAdministrator(user, password);
   }
 
-  private async getAndCheckAdministratorIsValid(phone: string) {
-    const user = await this.repository.getAdministratorByPhone(
-      normalizePhone(phone),
-    );
+  private async getAndCheckAdministratorIsValid(email: string, shopId) {
+    const user = await this.repository.getAdministratorByEmail(email, shopId);
 
     if (user) return user;
 

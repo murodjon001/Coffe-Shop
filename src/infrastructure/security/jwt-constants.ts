@@ -5,6 +5,13 @@ export const ADMINISTRATOR_CONSTANTS = {
   refreshExpiresIn: '30d',
 };
 
+export const SUPER_USER_CONSTANTS = {
+  secret: process.env.SUPER_USER_JWT_ACCESS_SECRET,
+  refreshSecret: process.env.SUPER_USER_JWT_REFRESH_SECRET,
+  expiresIn: '5m',
+  refreshExpiresIn: '30d',
+};
+
 export const CLIENT_CONSTANTS = {
   secret: process.env.CLIENT_JWT_ACCESS_SECRET,
   refreshSecret: process.env.CLIENT_JWT_REFRESH_SECRET,

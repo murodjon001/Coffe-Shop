@@ -10,11 +10,14 @@ export class AdministratorSecurityRepository {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAdministratorByPhone(phone: string) {
+  async getAdministratorByEmail(email: string, shopId: string) {
     try {
       const administrator = await this.prisma.administrator.findUnique({
         where: {
-          phone: phone,
+          coffeeShopId_email: {
+            coffeeShopId: shopId,
+            email,
+          },
         },
       });
 

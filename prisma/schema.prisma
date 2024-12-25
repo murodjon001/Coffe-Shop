@@ -13,7 +13,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Administrator{
+model CoffeeShop{
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  shopName      String
+  logo          String?
+  phone         String        @unique
+
+  address       String?
+  latitude      Int?
+  longitude     Int?
+
+  administrators              Administrator[]
+  menus                      Menu[]
+  orders                      Order[]
+  clients                     Client[]
+  products                    Product[]
+  categories                  Category[]
+}
+
+model Superuser{
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -24,10 +45,30 @@ model Administrator{
   password  String
 }
 
+model Administrator{
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name      String  
+  surname   String
+  phone     String
+  email     String
+  password  String
+
+  coffeeShopId          String
+  coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
+
+  @@unique([coffeeShopId, email])
+}
+
 model Menu {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  coffeeShopId          String
+  coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
 
   categories        Category[]
 }
@@ -43,6 +84,9 @@ model Category {
 
   menuId          String
   menu            Menu      @relation(fields: [menuId], references: [id])
+
+  coffeeShopId          String
+  coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
 
   products        Product[]
 }
@@ -62,6 +106,9 @@ model Product {
   categoryId      String
   category        Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
+  coffeeShopId          String
+  coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
+
   orderProducts       OrderProduct[]
   basketItems         BasketItem[]
  
@@ -77,15 +124,20 @@ model Client {
   surname   String
   phone     String      
   avatar    String?
-  email     String      @unique
+  email     String
   password  String  
   otp            Int?
   otpExpired     DateTime?
 
   isConfirmed     Boolean     @default(false)
 
+  coffeeShopId          String
+  coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
+
   orders            Order[]
   basket            Basket?
+
+  @@unique([coffeeShopId, email])
 }
 
 model Order {
@@ -95,6 +147,9 @@ model Order {
 
   clientId        String
   client          Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  coffeeShopId          String
+  coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
   
   orderProducts     OrderProduct[]
 }

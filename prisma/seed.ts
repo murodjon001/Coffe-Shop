@@ -6,13 +6,13 @@ const prisma = new PrismaClient();
 async function main() {
   try {
     const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(process.env.ADMINISTRATOR_PASSWORD, salt);
-    await prisma.administrator.create({
+    const hash = await bcrypt.hash(process.env.SUPER_USER_PASSWORD, salt);
+    await prisma.superuser.create({
       data: {
         password: hash,
-        name: process.env.ADMINISTRATOR_NAME,
-        surname: process.env.ADMINISTRATOR_SURNAME,
-        phone: process.env.ADMINISTRATOR_PHONE,
+        name: process.env.SUPER_USER_NAME,
+        surname: process.env.SUPER_USER_SURNAME,
+        phone: process.env.SUPER_USER_PHONE,
       },
     });
   } catch (err) {

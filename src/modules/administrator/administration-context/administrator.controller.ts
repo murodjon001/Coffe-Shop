@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { AdministratorService } from './administrator.service';
 import { AdministratorJwtGuard } from 'src/infrastructure/security/administrator/guards/administrator-jwt.guard';
 import { GetCurrentUser } from 'src/infrastructure/decorators/get-current-user.decorator';
 import { AdministratorTokenEntity } from 'src/shared/entities/administrator-token.entity';
@@ -7,6 +6,7 @@ import { CustomHttpException } from 'src/infrastructure/errors/custom-http-excep
 import { SystemError } from 'src/shared/system-error.enum';
 import { AdministratorLocalGuard } from 'src/infrastructure/security/administrator/guards/administrator-local.guard';
 import { RefreshTokenDto } from 'src/shared/dto/refresh-token.dto';
+import { AdministratorService } from './administrator.service';
 
 @Controller('administrators')
 export class AdministratorController {
