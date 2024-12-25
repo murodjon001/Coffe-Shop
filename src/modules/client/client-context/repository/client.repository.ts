@@ -1,33 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/infrastructure/prisma/prisma.service';
-import { ClientEntity } from '../entities/client.entity';
 import { CustomHttpException } from 'src/infrastructure/errors/custom-http-exception';
 import { SystemError } from 'src/shared/system-error.enum';
 import { generateOtp } from 'src/shared/utils/create-otp';
 import { PasswordVo } from 'src/shared/value-objects/password';
+import { ClientEntity } from '../../shared/entities/client.entity';
 
 @Injectable()
 export class ClientRepository {
+  private logger = new Logger(ClientRepository.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   async createClient(entity: ClientEntity) {
     try {
       const otp = generateOtp();
+      const otpExpired = this.getOtpExpired();
 
       await this.prisma.client.create({
         data: {
-          ...entity,
+          name: entity.name,
+          surname: entity.surname,
+          avatar: entity.avatar,
+          email: entity.email,
+          phone: entity.phone,
           password: entity.password.getHash,
-          otpExpired: new Date(), // balki bunga 1 daqiqa qo'shiladi
+          otpExpired,
           otp,
           isConfirmed: false,
+          basket: {
+            create: {},
+          },
         },
       });
 
       return otp;
     } catch (err) {
+      this.logger.error(err);
+
       throw new CustomHttpException(
-        `Error while createClient: ${err}`,
+        `Error while createClient`,
         SystemError.INTERNAL_SERVER_ERROR,
         500,
       );
@@ -59,6 +71,7 @@ export class ClientRepository {
   async resetOtp(email: string) {
     try {
       const otp = generateOtp();
+      const otpExpired = this.getOtpExpired();
 
       await this.prisma.client.update({
         where: {
@@ -66,7 +79,7 @@ export class ClientRepository {
         },
         data: {
           otp,
-          otpExpired: new Date(), // + 1 minute
+          otpExpired,
         },
       });
 
@@ -178,6 +191,10 @@ export class ClientRepository {
         },
       });
 
+      if (!client) {
+        return null;
+      }
+
       return new ClientEntity({ ...client });
     } catch (err) {
       throw new CustomHttpException(
@@ -186,5 +203,13 @@ export class ClientRepository {
         500,
       );
     }
+  }
+
+  private getOtpExpired() {
+    const today = new Date();
+
+    today.setMinutes(today.getMinutes() + 1);
+
+    return today;
   }
 }

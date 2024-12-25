@@ -25,7 +25,7 @@ export class ClientLocalStrategy extends PassportStrategy(
       );
     }
 
-    const isValidPassword = user.password.compare(password);
+    const isValidPassword = await user.password.compare(password);
 
     if (!isValidPassword) {
       throw new CustomHttpException(

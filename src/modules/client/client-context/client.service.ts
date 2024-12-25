@@ -10,21 +10,23 @@ import {
 import { ClientTokenEntity } from 'src/shared/entities/client-token.entity';
 import { SystemError } from 'src/shared/system-error.enum';
 import { ClientRepository } from './repository/client.repository';
-import { MailerService } from '@nestjs-modules/mailer';
 import { RegistrationClientDto } from './dto/registration-client.dto';
-import { ClientEntity } from './entities/client.entity';
 import { PasswordVo } from 'src/shared/value-objects/password';
 import { EmailDto } from './dto/email.dto';
 import { OtpDto } from './dto/otp.dto';
 import { UpdatePersonalDataDto } from './dto/update-personal-data.dto';
-import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdatePasswordDto } from '../shared/dto/update-password.dto';
+import { ClientEntity } from '../shared/entities/client.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EventName } from 'src/shared/enum/event-names';
+import { SendOtpEvent } from './events/send-otp.event';
 
 @Injectable()
 export class ClientService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly repository: ClientRepository,
-    private readonly mailerService: MailerService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async login(entity: ClientTokenEntity): Promise<IToken> {
@@ -69,11 +71,10 @@ export class ClientService {
 
     const otp = await this.repository.createClient(client);
 
-    await this.mailerService.sendMail({
-      to: dto.email,
-      subject: 'Your one time password',
-      text: `Your  one time password is ${otp}. This password is valid for 1 minute`,
-    });
+    this.eventEmitter.emit(
+      EventName.SEND_OTP,
+      new SendOtpEvent(otp, dto.email),
+    );
   }
 
   async resendOtp(dto: EmailDto) {
@@ -81,11 +82,10 @@ export class ClientService {
 
     const otp = await this.repository.resetOtp(dto.email);
 
-    await this.mailerService.sendMail({
-      to: dto.email,
-      subject: 'Your one time password',
-      text: `Your  one time password is ${otp}. This password is valid for 1 minute`,
-    });
+    this.eventEmitter.emit(
+      EventName.SEND_OTP,
+      new SendOtpEvent(otp, dto.email),
+    );
   }
 
   async confirmClient(dto: OtpDto) {
@@ -108,17 +108,17 @@ export class ClientService {
   async updatePassword(id: string, dto: UpdatePasswordDto) {
     const client = await this.getClientById(id);
 
-    const isValidPassword = client.password.compare(dto.oldPassword);
+    const isValidPassword = await client.password.compare(dto.oldPassword);
 
     if (!isValidPassword) {
       throw new CustomHttpException(
-        'Old Password is not found',
+        'Old Password is wrong',
         SystemError.BAD_REQUEST,
         400,
       );
     }
 
-    client.updatePassword(dto.newPassword);
+    await client.updatePassword(dto.newPassword);
 
     await this.repository.updatePassword(client);
   }

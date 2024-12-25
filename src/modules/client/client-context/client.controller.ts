@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { ClientService } from './client.service';
 import { GetCurrentUser } from 'src/infrastructure/decorators/get-current-user.decorator';
-import { AdministratorLocalGuard } from 'src/infrastructure/security/administrator/guards/administrator-local.guard';
 import { RefreshTokenDto } from 'src/shared/dto/refresh-token.dto';
 import { ClientJwtAuthGuard } from 'src/infrastructure/security/client/guards/client.jwt.guard';
 import { ClientTokenEntity } from 'src/shared/entities/client-token.entity';
@@ -9,7 +8,8 @@ import { RegistrationClientDto } from './dto/registration-client.dto';
 import { EmailDto } from './dto/email.dto';
 import { OtpDto } from './dto/otp.dto';
 import { UpdatePersonalDataDto } from './dto/update-personal-data.dto';
-import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdatePasswordDto } from '../shared/dto/update-password.dto';
+import { ClientLocalGuard } from 'src/infrastructure/security/client/guards/client.local.guard';
 
 @Controller('clients')
 export class ClientController {
@@ -21,7 +21,7 @@ export class ClientController {
     return client;
   }
 
-  @UseGuards(AdministratorLocalGuard)
+  @UseGuards(ClientLocalGuard)
   @Post('login')
   login(@GetCurrentUser() entity: ClientTokenEntity) {
     return this.service.login(entity);
@@ -51,7 +51,7 @@ export class ClientController {
   @Patch('personal-data')
   updatePersonalDataClient(
     @GetCurrentUser() client: ClientTokenEntity,
-    dto: UpdatePersonalDataDto,
+    @Body() dto: UpdatePersonalDataDto,
   ) {
     return this.service.updatePersonalDataClient(client.id, dto);
   }
@@ -60,7 +60,7 @@ export class ClientController {
   @Patch('password')
   updatePassword(
     @GetCurrentUser() client: ClientTokenEntity,
-    dto: UpdatePasswordDto,
+    @Body() dto: UpdatePasswordDto,
   ) {
     return this.service.updatePassword(client.id, dto);
   }

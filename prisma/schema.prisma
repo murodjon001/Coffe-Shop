@@ -60,7 +60,7 @@ model Product {
   isPurchasable   String?
 
   categoryId      String
-  category        Category      @relation(fields: [categoryId], references: [id])
+  category        Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   orderProducts       OrderProduct[]
   basketItems         BasketItem[]
@@ -94,7 +94,7 @@ model Order {
   updatedAt DateTime @updatedAt
 
   clientId        String
-  client          Client        @relation(fields: [clientId], references: [id])
+  client          Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
   
   orderProducts     OrderProduct[]
 }
@@ -107,10 +107,10 @@ model OrderProduct {
   quantity         Int
 
   productId        String
-  product          Product        @relation(fields: [productId], references: [id])
+  product          Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
   
   orderId        String
-  order          Order        @relation(fields: [orderId], references: [id])
+  order          Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 
@@ -120,7 +120,7 @@ model Basket {
   updatedAt DateTime @updatedAt
 
   clientId      String    @unique
-  client        Client    @relation(fields: [clientId], references: [id])
+  client        Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
   basketItems     BasketItem[]
 }
@@ -133,10 +133,10 @@ model BasketItem {
   quantity      Int
 
   basketId      String    @unique
-  basket        Basket    @relation(fields: [basketId], references: [id])
+  basket        Basket    @relation(fields: [basketId], references: [id], onDelete: Cascade)
 
   productId     String
-  product       Product     @relation(fields: [productId], references: [id])
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([productId, basketId], name: "uniqueBasketItem")
   @@index([basketId])

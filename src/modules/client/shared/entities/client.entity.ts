@@ -1,7 +1,7 @@
 import { ClientBaseEntity } from 'src/shared/entities/client-base.entity';
 import { PasswordVo } from 'src/shared/value-objects/password';
 import { IClientBaseEntity } from 'src/shared/interfaces/client-base-entity.interface';
-import { UpdatePersonalDataDto } from '../dto/update-personal-data.dto';
+import { UpdatePersonalDataDto } from '../../client-context/dto/update-personal-data.dto';
 
 export class ClientEntity extends ClientBaseEntity {
   password?: PasswordVo;
@@ -25,5 +25,6 @@ export class ClientEntity extends ClientBaseEntity {
 
   async updatePassword(newPassword: string) {
     this.password = await PasswordVo.create(newPassword);
+    console.log(this.password.getHash, 'entity');
   }
 }

@@ -35,6 +35,9 @@ import { MailerModule } from '@nestjs-modules/mailer';
     ]), // this module use race limiter(Limits requests to the API)
     MailerModule.forRoot({
       transport: {
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
         auth: {
           user: process.env.EMAIL,
           pass: process.env.PASSWORD_EMAIL,

@@ -1,4 +1,3 @@
-import { UpdatePersonalDataDto } from 'src/modules/client/client-context/dto/update-personal-data.dto';
 import { IClientBaseEntity } from '../interfaces/client-base-entity.interface';
 import { BaseEntity } from './base-entity';
 
@@ -18,5 +17,6 @@ export class ClientBaseEntity extends BaseEntity {
     this.email = params.email;
     this.avatar = params.avatar;
     this.isConfirmed = params.isConfirmed;
+    this.phone = params.phone;
   }
 }
