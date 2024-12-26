@@ -35,11 +35,11 @@ export class CreateCoffeeShopDto {
   @IsNumber()
   @Max(90)
   @Min(-90)
-  latitude: string;
+  latitude: number;
 
   @IsOptional()
   @IsNumber()
   @Max(180)
   @Min(-180)
-  longitude: string;
+  longitude: number;
 }

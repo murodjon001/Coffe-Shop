@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/infrastructure/prisma/prisma.service';
-import { CoffeeShopEntity } from '../entities/coffee-shop.entity';
+import { CoffeeShopEntity } from '../super-user-context/entities/coffee-shop.entity';
 import { CustomHttpException } from 'src/infrastructure/errors/custom-http-exception';
 import { SystemError } from 'src/shared/system-error.enum';
 
