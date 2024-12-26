@@ -10,9 +10,10 @@ export class ClientAdministrationRepository {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAllClients(skip: number, take: number) {
+  async getAllClients(shopId: string, skip: number, take: number) {
     try {
       const clients = await this.prisma.client.findMany({
+        where: { coffeeShopId: shopId },
         skip,
         take,
       });

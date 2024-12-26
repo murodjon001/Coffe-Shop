@@ -25,6 +25,7 @@ export class ClientRepository {
           email: entity.email,
           phone: entity.phone,
           password: entity.password.getHash,
+          coffeeShopId: entity.coffeeShopId,
           otpExpired,
           otp,
           isConfirmed: false,
@@ -68,14 +69,17 @@ export class ClientRepository {
     }
   }
 
-  async resetOtp(email: string) {
+  async resetOtp(email: string, shopId: string) {
     try {
       const otp = generateOtp();
       const otpExpired = this.getOtpExpired();
 
       await this.prisma.client.update({
         where: {
-          email,
+          coffeeShopId_email: {
+            coffeeShopId: shopId,
+            email,
+          },
         },
         data: {
           otp,
@@ -93,10 +97,15 @@ export class ClientRepository {
     }
   }
 
-  async confirmClient(email: string) {
+  async confirmClient(email: string, shopId: string) {
     try {
       await this.prisma.client.update({
-        where: { email },
+        where: {
+          coffeeShopId_email: {
+            coffeeShopId: shopId,
+            email: email,
+          },
+        },
         data: {
           isConfirmed: true,
           otp: null,
@@ -138,11 +147,14 @@ export class ClientRepository {
     }
   }
 
-  async findByOtp(otp: number, email: string) {
+  async findByOtp(otp: number, email: string, shopId: string) {
     try {
       const client = await this.prisma.client.findUnique({
         where: {
-          email,
+          coffeeShopId_email: {
+            email,
+            coffeeShopId: shopId,
+          },
           otp,
           otpExpired: {
             gte: new Date(),
@@ -183,11 +195,14 @@ export class ClientRepository {
     }
   }
 
-  async findByEmail(email: string) {
+  async findByEmail(email: string, shopId: string) {
     try {
       const client = await this.prisma.client.findUnique({
         where: {
-          email,
+          coffeeShopId_email: {
+            email,
+            coffeeShopId: shopId,
+          },
         },
       });
 

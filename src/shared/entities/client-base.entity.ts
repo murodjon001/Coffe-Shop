@@ -8,6 +8,7 @@ export class ClientBaseEntity extends BaseEntity {
   email: string;
   avatar?: string;
   isConfirmed: boolean;
+  coffeeShopId: string;
 
   constructor(params: IClientBaseEntity) {
     super(params);
@@ -18,5 +19,6 @@ export class ClientBaseEntity extends BaseEntity {
     this.avatar = params.avatar;
     this.isConfirmed = params.isConfirmed;
     this.phone = params.phone;
+    this.coffeeShopId = params.coffeeShopId;
   }
 }

@@ -19,6 +19,10 @@ export class AdministratorLocalStrategy extends PassportStrategy(
   async validate(req: Request, email: string, password: string): Promise<any> {
     const shopId = req.params.shopId;
 
+    if (!shopId) {
+      throw Error('shopId is required');
+    }
+
     const user = await this.getAndCheckAdministratorIsValid(email, shopId);
 
     return await this.compareAdministrator(user, password);

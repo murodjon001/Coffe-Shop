@@ -27,7 +27,7 @@ export class AdministratorController {
   }
 
   @UseGuards(AdministratorLocalGuard)
-  @Post('login')
+  @Post(':shopId/login')
   login(@GetCurrentUser() entity: AdministratorTokenEntity) {
     return this.service.login(entity);
   }

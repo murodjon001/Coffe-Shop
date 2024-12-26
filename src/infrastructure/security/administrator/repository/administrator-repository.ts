@@ -56,7 +56,7 @@ export class AdministratorSecurityRepository {
       this.logger.error(err);
 
       throw new CustomHttpException(
-        'Error while getClientByEmailAndOtp',
+        'Error while getAdministratorById',
         SystemError.INTERNAL_SERVER_ERROR,
         500,
       );

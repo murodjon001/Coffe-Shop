@@ -10,11 +10,14 @@ export class ClientSecurityRepository {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async getClientByEmail(email: string) {
+  async getClientByEmail(email: string, shopId: string) {
     try {
       const client = await this.prisma.client.findUnique({
         where: {
-          email: email,
+          coffeeShopId_email: {
+            email,
+            coffeeShopId: shopId,
+          },
           isConfirmed: true,
         },
       });
@@ -28,7 +31,7 @@ export class ClientSecurityRepository {
       this.logger.error(err);
 
       throw new CustomHttpException(
-        'Error while getClientByEmailAndOtp',
+        'Error while getClientByEmail',
         SystemError.INTERNAL_SERVER_ERROR,
         500,
       );
@@ -55,7 +58,7 @@ export class ClientSecurityRepository {
       this.logger.error(err);
 
       throw new CustomHttpException(
-        'Error while getClientByEmailAndOtp',
+        'Error while getClientById',
         SystemError.INTERNAL_SERVER_ERROR,
         500,
       );

@@ -7,8 +7,8 @@ import { SystemError } from 'src/shared/system-error.enum';
 export class ClientAdministrationService {
   constructor(private readonly repository: ClientAdministrationRepository) {}
 
-  async getAllClients(skip: number, take: number) {
-    const clients = await this.repository.getAllClients(skip, take);
+  async getAllClients(skip: number, take: number, shopId: string) {
+    const clients = await this.repository.getAllClients(shopId, skip, take);
 
     return clients;
   }

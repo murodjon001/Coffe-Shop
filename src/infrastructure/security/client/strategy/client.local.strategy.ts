@@ -4,6 +4,7 @@ import { Strategy } from 'passport-local';
 import { CustomHttpException } from 'src/infrastructure/errors/custom-http-exception';
 import { SystemError } from 'src/shared/system-error.enum';
 import { ClientSecurityRepository } from '../repository/client-repository';
+import { Request } from 'express';
 
 @Injectable()
 export class ClientLocalStrategy extends PassportStrategy(
@@ -11,11 +12,17 @@ export class ClientLocalStrategy extends PassportStrategy(
   'client-local',
 ) {
   constructor(private readonly repository: ClientSecurityRepository) {
-    super({ usernameField: 'email' });
+    super({ usernameField: 'email', passReqToCallback: true });
   }
 
-  async validate(email: string, password: string) {
-    const user = await this.repository.getClientByEmail(email);
+  async validate(req: Request, email: string, password: string) {
+    const shopId = req.params.shopId;
+
+    if (!shopId) {
+      throw Error('shopId is required');
+    }
+
+    const user = await this.repository.getClientByEmail(email, shopId);
 
     if (!user) {
       throw new CustomHttpException(

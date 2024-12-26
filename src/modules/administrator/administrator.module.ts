@@ -8,6 +8,9 @@ import { AdministratorLocalStrategy } from 'src/infrastructure/security/administ
 import { AdministratorJwtStrategy } from 'src/infrastructure/security/administrator/strategy/administrator.jwt.strategy';
 import { AdministratorSecurityRepository } from 'src/infrastructure/security/administrator/repository/administrator-repository';
 import { PrismaModule } from 'src/infrastructure/prisma/prisma.module';
+import { AdministratorSuperUserController } from './super-user-context/administration.super-user.controller';
+import { AdministrationSuperUserService } from './super-user-context/administration.super-user.service';
+import { AdministrationSuperUserRepository } from './super-user-context/repository/administration.super-user.repository';
 
 @Module({
   imports: [
@@ -18,12 +21,15 @@ import { PrismaModule } from 'src/infrastructure/prisma/prisma.module';
       signOptions: { expiresIn: '24h' },
     }),
   ],
-  controllers: [AdministratorController],
+
+  controllers: [AdministratorController, AdministratorSuperUserController],
   providers: [
     AdministratorService,
     AdministratorLocalStrategy,
     AdministratorJwtStrategy,
     AdministratorSecurityRepository,
+    AdministrationSuperUserService,
+    AdministrationSuperUserRepository,
   ],
 })
 export class AdministratorModel {}

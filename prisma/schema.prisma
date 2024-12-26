@@ -18,13 +18,13 @@ model CoffeeShop{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  shopName      String
+  shopName      String        @unique
   logo          String?
   phone         String        @unique
 
   address       String?
-  latitude      Int?
-  longitude     Int?
+  latitude      Float?
+  longitude     Float?
 
   administrators              Administrator[]
   menus                      Menu[]

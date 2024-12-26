@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ClientService } from './client.service';
 import { GetCurrentUser } from 'src/infrastructure/decorators/get-current-user.decorator';
 import { RefreshTokenDto } from 'src/shared/dto/refresh-token.dto';
@@ -22,7 +30,7 @@ export class ClientController {
   }
 
   @UseGuards(ClientLocalGuard)
-  @Post('login')
+  @Post(':shopId/login')
   login(@GetCurrentUser() entity: ClientTokenEntity) {
     return this.service.login(entity);
   }
@@ -32,19 +40,22 @@ export class ClientController {
     return this.service.refreshTokenClient(dto.refreshToken);
   }
 
-  @Post('registration')
-  registrationClient(@Body() dto: RegistrationClientDto) {
-    return this.service.registrationClient(dto);
+  @Post(':shopId/registration')
+  registrationClient(
+    @Body() dto: RegistrationClientDto,
+    @Param('shopId') shopId: string,
+  ) {
+    return this.service.registrationClient(dto, shopId);
   }
 
-  @Post('otp')
-  resendOtp(@Body() dto: EmailDto) {
-    return this.service.resendOtp(dto);
+  @Post(':shopId/otp')
+  resendOtp(@Body() dto: EmailDto, @Param('shopId') shopId: string) {
+    return this.service.resendOtp(dto, shopId);
   }
 
-  @Post('confirmed')
-  confirmClient(@Body() dto: OtpDto) {
-    return this.service.confirmClient(dto);
+  @Post(':shopId/confirmed')
+  confirmClient(@Body() dto: OtpDto, @Param('shopId') shopId: string) {
+    return this.service.confirmClient(dto, shopId);
   }
 
   @UseGuards(ClientJwtAuthGuard)

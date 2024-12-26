@@ -1,48 +1,9 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsStrongPassword,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { IsOptional, IsString, MaxLength } from 'class-validator';
+import { RegistrationDto } from 'src/shared/dto/registration-dto';
 
-export class RegistrationClientDto {
-  @IsNotEmpty()
-  @IsString()
-  @MaxLength(50)
-  @MinLength(1)
-  name: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @MaxLength(50)
-  @MinLength(1)
-  surname: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @MaxLength(20)
-  @MinLength(7)
-  phone: string;
-
+export class RegistrationClientDto extends RegistrationDto {
   @IsOptional()
   @IsString()
   @MaxLength(500)
   avatar: string;
-
-  @IsNotEmpty()
-  @MaxLength(255)
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  @IsStrongPassword({
-    minLength: 8,
-    minNumbers: 1,
-    minUppercase: 1,
-    minSymbols: 0,
-  })
-  password: string;
 }

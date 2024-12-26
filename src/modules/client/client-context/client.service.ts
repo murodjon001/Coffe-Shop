@@ -64,8 +64,8 @@ export class ClientService {
     }
   }
 
-  async registrationClient(dto: RegistrationClientDto) {
-    await this.validateEmail(dto.email);
+  async registrationClient(dto: RegistrationClientDto, shopId: string) {
+    await this.validateEmail(dto.email, shopId);
 
     const client = await this.createClientEntity(dto);
 
@@ -77,10 +77,10 @@ export class ClientService {
     );
   }
 
-  async resendOtp(dto: EmailDto) {
-    await this.checkClientIsConfirmed(dto.email);
+  async resendOtp(dto: EmailDto, shopId: string) {
+    await this.checkClientIsConfirmed(dto.email, shopId);
 
-    const otp = await this.repository.resetOtp(dto.email);
+    const otp = await this.repository.resetOtp(dto.email, shopId);
 
     this.eventEmitter.emit(
       EventName.SEND_OTP,
@@ -88,10 +88,10 @@ export class ClientService {
     );
   }
 
-  async confirmClient(dto: OtpDto) {
-    await this.validateConfirmedClient(dto);
+  async confirmClient(dto: OtpDto, shopId: string) {
+    await this.validateConfirmedClient(dto, shopId);
 
-    await this.repository.confirmClient(dto.email);
+    await this.repository.confirmClient(dto.email, shopId);
   }
 
   async updatePersonalDataClient(id: string, dto: UpdatePersonalDataDto) {
@@ -137,8 +137,8 @@ export class ClientService {
     return client;
   }
 
-  private async validateConfirmedClient(dto: OtpDto) {
-    const client = await this.repository.findByOtp(dto.otp, dto.email);
+  private async validateConfirmedClient(dto: OtpDto, shopId: string) {
+    const client = await this.repository.findByOtp(dto.otp, dto.email, shopId);
 
     if (!client) {
       throw new CustomHttpException(
@@ -158,8 +158,8 @@ export class ClientService {
     }).withPassword(password);
   }
 
-  private async checkClientIsConfirmed(email: string) {
-    const client = await this.repository.findByEmail(email);
+  private async checkClientIsConfirmed(email: string, shopId: string) {
+    const client = await this.repository.findByEmail(email, shopId);
 
     if (!client) {
       throw new CustomHttpException(
@@ -178,8 +178,8 @@ export class ClientService {
     }
   }
 
-  private async validateEmail(email: string) {
-    const isExist = await this.repository.findByEmail(email);
+  private async validateEmail(email: string, shopId: string) {
+    const isExist = await this.repository.findByEmail(email, shopId);
 
     if (isExist) {
       throw new CustomHttpException(

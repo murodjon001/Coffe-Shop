@@ -14,9 +14,13 @@ import { ClientAdministrationService } from './client.administration.service';
 export class ClientAdministrationController {
   constructor(private readonly service: ClientAdministrationService) {}
 
-  @Get()
-  getAllClients(@Query('skip') skip: number, @Query('take') take: number) {
-    return this.service.getAllClients(skip || 0, take || 10);
+  @Get(':shopId/list')
+  getAllClients(
+    @Query('skip') skip: number,
+    @Query('take') take: number,
+    @Param('shopId') shopId: string,
+  ) {
+    return this.service.getAllClients(skip || 0, take || 10, shopId);
   }
 
   @Get(':id/single')

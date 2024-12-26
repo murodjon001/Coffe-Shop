@@ -7,4 +7,5 @@ export interface IClientBaseEntity extends IBaseEntity {
   email: string;
   avatar?: string;
   isConfirmed: boolean;
+  coffeeShopId: string;
 }
