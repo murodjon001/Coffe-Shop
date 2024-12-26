@@ -67,10 +67,38 @@ model Menu {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  season      SEASON      @default(UNIVERSAL)
+
   coffeeShopId          String
   coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
 
-  categories        Category[]
+  menuProducts          MenuProducts[]
+
+  @@unique([season, coffeeShopId])
+}
+
+model MenuProducts{
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  categoryId      String
+  category        Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  menuId          String
+  menu            Menu          @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  products          Product[]
+
+  @@unique([menuId, categoryId])
+}
+
+enum SEASON {
+  SPRING
+  SUMMER
+  WINTER
+  FALL
+  UNIVERSAL
 }
 
 model Category {
@@ -82,13 +110,13 @@ model Category {
   image     String?
   isActive  Boolean   @default(true)
 
-  menuId          String
-  menu            Menu      @relation(fields: [menuId], references: [id])
-
   coffeeShopId          String
   coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
 
   products        Product[]
+  menuProducts    MenuProducts[]
+
+  @@unique([title, coffeeShopId])
 }
 
 model Product {
@@ -111,6 +139,7 @@ model Product {
 
   orderProducts       OrderProduct[]
   basketItems         BasketItem[]
+  menuProducts        MenuProducts[]
  
   @@unique([categoryId, title], name: "uniqueProduct")
 }
