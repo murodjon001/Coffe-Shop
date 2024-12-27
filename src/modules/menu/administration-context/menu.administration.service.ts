@@ -16,7 +16,7 @@ export class MenuAdministrationService {
     return await this.repository.save(menu);
   }
 
-  //TODO: [Technical debt] implement method updateMenu. Note: Because I missed the deadline
+  //TODO: [Business debt] implement method updateMenu. Note: Because I missed the deadline
 
   async getMenuById(id: string) {
     //TODO: [Technical debt] implement if check menu is found. Note: Because I missed the deadline
