@@ -11,6 +11,7 @@ import { ClientModel } from './modules/client/client.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { SuperUserModel } from './modules/super-user/super-user.module';
 import { CoffeeShopModule } from './modules/coffee-shop/coffee-shop.module';
+import { MenuModule } from './modules/menu/menu.module';
 
 @Module({
   controllers: [AppController],
@@ -52,6 +53,7 @@ import { CoffeeShopModule } from './modules/coffee-shop/coffee-shop.module';
     ClientModel,
     SuperUserModel,
     CoffeeShopModule,
+    MenuModule,
   ],
 })
 export class AppModule {}

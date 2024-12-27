@@ -5,7 +5,6 @@ export class CategoryBaseEntity extends BaseEntity {
   title: string;
   image?: string;
   isActive: boolean;
-  menuId: string;
   coffeeShopId: string;
 
   constructor(params: ICategoryBaseEntity) {
@@ -13,7 +12,6 @@ export class CategoryBaseEntity extends BaseEntity {
 
     this.title = params.title;
     this.image = params.image;
-    this.menuId = params.menuId;
     this.coffeeShopId = params.coffeeShopId;
   }
 }

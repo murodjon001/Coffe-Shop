@@ -68,16 +68,17 @@ model Menu {
   updatedAt DateTime @updatedAt
 
   season      SEASON      @default(UNIVERSAL)
+  isActive    Boolean     @default(true)
 
   coffeeShopId          String
   coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
 
-  menuProducts          MenuProducts[]
+  menuItems          MenuItem[]
 
   @@unique([season, coffeeShopId])
 }
 
-model MenuProducts{
+model MenuItem{
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -88,10 +89,25 @@ model MenuProducts{
   menuId          String
   menu            Menu          @relation(fields: [menuId], references: [id], onDelete: Cascade)
 
-  products          Product[]
+  products          MenuItemsProducts[]
 
   @@unique([menuId, categoryId])
 }
+
+model MenuItemsProducts {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productId       String
+  product         Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  menuItemId     String
+  menuItem       MenuItem     @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, menuItemId])
+}
+
 
 enum SEASON {
   SPRING
@@ -114,7 +130,7 @@ model Category {
   coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
 
   products        Product[]
-  menuProducts    MenuProducts[]
+  menuItems    MenuItem[]
 
   @@unique([title, coffeeShopId])
 }
@@ -129,7 +145,7 @@ model Product {
   discountPercent Float    @default(0)
   description     String?
   image           String?
-  isPurchasable   String?
+  isPurchasable   Boolean       @default(true)
 
   categoryId      String
   category        Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -139,7 +155,7 @@ model Product {
 
   orderProducts       OrderProduct[]
   basketItems         BasketItem[]
-  menuProducts        MenuProducts[]
+  menuItems        MenuItemsProducts[]
  
   @@unique([categoryId, title], name: "uniqueProduct")
 }
