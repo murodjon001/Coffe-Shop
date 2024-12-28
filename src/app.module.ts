@@ -13,6 +13,8 @@ import { SuperUserModel } from './modules/super-user/super-user.module';
 import { CoffeeShopModule } from './modules/coffee-shop/coffee-shop.module';
 import { MenuModule } from './modules/menu/menu.module';
 import { CategoryModule } from './modules/category/category.module';
+import { ProductModule } from './modules/product/product.module';
+import { BasketModule } from './modules/basket/basket.module';
 
 @Module({
   controllers: [AppController],
@@ -56,6 +58,8 @@ import { CategoryModule } from './modules/category/category.module';
     CoffeeShopModule,
     MenuModule,
     CategoryModule,
+    ProductModule,
+    BasketModule,
   ],
 })
 export class AppModule {}
