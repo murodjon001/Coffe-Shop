@@ -190,6 +190,10 @@ model Order {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  clientNote      String?
+  orderDate     DateTime
+  orderStatus ORDER_STATUS @default(PENDING)
+
   clientId        String
   client          Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
@@ -197,6 +201,12 @@ model Order {
   coffeeShop            CoffeeShop          @relation(fields: [coffeeShopId], references: [id])
   
   orderProducts     OrderProduct[]
+}
+
+enum ORDER_STATUS {
+  PENDING
+  CANCELLED
+  DELIVERED
 }
 
 model OrderProduct {

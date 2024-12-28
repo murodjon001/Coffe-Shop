@@ -15,6 +15,7 @@ import { MenuModule } from './modules/menu/menu.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { BasketModule } from './modules/basket/basket.module';
+import { OrderManagementModule } from './modules/order/order.module';
 
 @Module({
   controllers: [AppController],
@@ -60,6 +61,7 @@ import { BasketModule } from './modules/basket/basket.module';
     CategoryModule,
     ProductModule,
     BasketModule,
+    OrderManagementModule,
   ],
 })
 export class AppModule {}
