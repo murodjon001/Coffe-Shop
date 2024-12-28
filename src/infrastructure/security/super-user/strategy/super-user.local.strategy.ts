@@ -10,7 +10,7 @@ import { SuperUserTokenEntity } from 'src/shared/entities/super-user-token.entit
 @Injectable()
 export class superUserLocalStrategy extends PassportStrategy(
   Strategy,
-  'superUser-local-guard',
+  'super-user-local-guard',
 ) {
   constructor(private readonly repository: SuperUserSecurityRepository) {
     super({ usernameField: 'phone' });
