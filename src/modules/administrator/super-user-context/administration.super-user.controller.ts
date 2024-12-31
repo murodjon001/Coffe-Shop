@@ -48,4 +48,6 @@ export class AdministratorSuperUserController {
   ) {
     return this.service.getAllAdministrators(skip || 0, take || 10);
   }
+
+  //TODO:[business debt]: implement delete administrator
 }

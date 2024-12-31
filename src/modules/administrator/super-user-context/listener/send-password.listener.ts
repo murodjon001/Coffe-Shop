@@ -13,8 +13,6 @@ export class SendPasswordListener {
   @OnEvent(EventName.SEND_PASSWORD)
   async handle(event: SendPasswordEvent) {
     try {
-      console.log(event);
-
       await this.mailerService.sendMail({
         to: event.email,
         subject: 'Your password',

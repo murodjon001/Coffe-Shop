@@ -17,8 +17,16 @@ export class AdministrationSuperUserRepository {
           id: entity.id,
         },
         create: {
-          ...entity,
-          password: entity.password.getHash,
+          password: entity.password?.getHash || '',
+          email: entity.email,
+          name: entity.email,
+          phone: entity.phone,
+          surname: entity.surname,
+          coffeeShop: {
+            connect: {
+              id: entity.coffeeShopId,
+            },
+          },
         },
         update: {
           name: entity.name,
