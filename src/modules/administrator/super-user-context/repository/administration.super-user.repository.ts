@@ -1,9 +1,10 @@
-import { Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CustomHttpException } from 'src/infrastructure/errors/custom-http-exception';
 import { PrismaService } from 'src/infrastructure/prisma/prisma.service';
 import { SystemError } from 'src/shared/system-error.enum';
 import { AdministratorEntity } from '../../shared/entities/administrator.entity';
 
+@Injectable()
 export class AdministrationSuperUserRepository {
   logger = new Logger(AdministrationSuperUserRepository.name);
 
@@ -57,12 +58,16 @@ export class AdministrationSuperUserRepository {
         };
       }
 
+      console.log(where);
+
       const administrator = await this.prisma.administrator.findFirst({
         where,
         select: {
           id: true,
         },
       });
+
+      console.log(administrator);
 
       if (!administrator) {
         return false;
