@@ -20,7 +20,7 @@ export class MenuRepository {
         create: {
           id: entity.id,
           createdAt: entity.createdAt,
-          updatedAt: entity.updateAt,
+          updatedAt: entity.updatedAt,
           coffeeShopId: entity.coffeeShopId,
           season: entity.season,
         },
