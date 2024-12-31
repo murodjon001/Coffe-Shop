@@ -10,9 +10,11 @@ export class SendPasswordListener {
 
   constructor(private readonly mailerService: MailerService) {}
 
-  @OnEvent(EventName.SEND_OTP)
+  @OnEvent(EventName.SEND_PASSWORD)
   async handle(event: SendPasswordEvent) {
     try {
+      console.log(event);
+
       await this.mailerService.sendMail({
         to: event.email,
         subject: 'Your password',
