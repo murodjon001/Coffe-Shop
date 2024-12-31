@@ -40,7 +40,7 @@ export class ClientRepository {
       this.logger.error(err);
 
       throw new CustomHttpException(
-        `Error while createClient`,
+        'Error while createClient',
         SystemError.INTERNAL_SERVER_ERROR,
         500,
       );
@@ -212,8 +212,10 @@ export class ClientRepository {
 
       return new ClientEntity({ ...client });
     } catch (err) {
+      this.logger.error(err);
+
       throw new CustomHttpException(
-        `Error while findByEmail: ${err}`,
+        `Error while findByEmail`,
         SystemError.INTERNAL_SERVER_ERROR,
         500,
       );

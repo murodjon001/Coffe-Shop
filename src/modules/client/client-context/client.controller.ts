@@ -40,12 +40,9 @@ export class ClientController {
     return this.service.refreshTokenClient(dto.refreshToken);
   }
 
-  @Post(':shopId/registration')
-  registrationClient(
-    @Body() dto: RegistrationClientDto,
-    @Param('shopId') shopId: string,
-  ) {
-    return this.service.registrationClient(dto, shopId);
+  @Post('registration')
+  registrationClient(@Body() dto: RegistrationClientDto) {
+    return this.service.registrationClient(dto);
   }
 
   @Post(':shopId/otp')

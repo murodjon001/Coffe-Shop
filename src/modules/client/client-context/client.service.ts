@@ -64,8 +64,8 @@ export class ClientService {
     }
   }
 
-  async registrationClient(dto: RegistrationClientDto, shopId: string) {
-    await this.validateEmail(dto.email, shopId);
+  async registrationClient(dto: RegistrationClientDto) {
+    await this.validateEmail(dto.email, dto.coffeeShopId);
 
     const client = await this.createClientEntity(dto);
 
