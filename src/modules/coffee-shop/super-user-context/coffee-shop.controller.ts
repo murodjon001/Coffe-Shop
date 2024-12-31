@@ -31,9 +31,4 @@ export class CoffeeShopController {
   getCoffeeShop(@Param('id') id: string) {
     return this.service.getCoffeeShop(id);
   }
-
-  @Get()
-  getAllCoffeeShop() {
-    return this.service.getAllCoffeeShop();
-  }
 }

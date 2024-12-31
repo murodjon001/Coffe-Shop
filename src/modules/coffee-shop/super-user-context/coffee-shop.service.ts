@@ -36,10 +36,6 @@ export class CoffeeShopService {
     return await this.getCoffeeShopById(id);
   }
 
-  async getAllCoffeeShop() {
-    return await this.repository.findAll();
-  }
-
   private async getCoffeeShopById(id: string) {
     const coffeeShop = await this.repository.findById(id);
 
