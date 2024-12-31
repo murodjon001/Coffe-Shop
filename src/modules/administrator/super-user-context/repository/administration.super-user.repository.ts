@@ -58,16 +58,12 @@ export class AdministrationSuperUserRepository {
         };
       }
 
-      console.log(where);
-
       const administrator = await this.prisma.administrator.findFirst({
         where,
         select: {
           id: true,
         },
       });
-
-      console.log(administrator);
 
       if (!administrator) {
         return false;

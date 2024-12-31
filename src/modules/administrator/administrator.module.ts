@@ -11,6 +11,7 @@ import { PrismaModule } from 'src/infrastructure/prisma/prisma.module';
 import { AdministratorSuperUserController } from './super-user-context/administration.super-user.controller';
 import { AdministrationSuperUserService } from './super-user-context/administration.super-user.service';
 import { AdministrationSuperUserRepository } from './super-user-context/repository/administration.super-user.repository';
+import { SendPasswordListener } from './super-user-context/listener/send-password.listener';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AdministrationSuperUserRepository } from './super-user-context/reposito
     AdministratorSecurityRepository,
     AdministrationSuperUserService,
     AdministrationSuperUserRepository,
+    SendPasswordListener,
   ],
 })
 export class AdministratorModel {}
