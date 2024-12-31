@@ -60,5 +60,10 @@ Follow the steps below to set up and run the backend for the Coffee Shop Network
 ```
 
 # Documentation
+Note: This documentation has not been finalized and is still in progress.
+
 The project documentation is available on Postman:
-https://documenter.getpostman.com/view/31351006/2sAYJ6Czhv
+https://documenter.getpostman.com/view/31351006/2sAYJ6Czhv 
+
+
+
