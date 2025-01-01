@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -37,7 +38,7 @@ export class ProductAdministrationController {
     return this.service.getProductByShopId(shopId, skip || 0, take || 10);
   }
 
-  @Get(':id/removed')
+  @Delete(':id/removed')
   deleteProduct(@Param('id') id: string) {
     return this.service.deleteProduct(id);
   }

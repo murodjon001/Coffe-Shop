@@ -1,7 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CategoryAdministrationService } from './category.administration.service';
 import { SaveCategoryDto } from './dtos/save.category.dto';
+import { AdministratorJwtGuard } from 'src/infrastructure/security/administrator/guards/administrator-jwt.guard';
 
+@UseGuards(AdministratorJwtGuard)
 @Controller('administration/categories')
 export class CategoryAdministrationController {
   constructor(private readonly service: CategoryAdministrationService) {}
