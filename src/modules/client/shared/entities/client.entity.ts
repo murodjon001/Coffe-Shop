@@ -25,6 +25,5 @@ export class ClientEntity extends ClientBaseEntity {
 
   async updatePassword(newPassword: string) {
     this.password = await PasswordVo.create(newPassword);
-    console.log(this.password.getHash, 'entity');
   }
 }

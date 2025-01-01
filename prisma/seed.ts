@@ -5,8 +5,6 @@ const prisma = new PrismaClient();
 
 async function main() {
   try {
-    console.log(process.env.SUPER_USER_PASSWORD);
-
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(process.env.SUPER_USER_PASSWORD, salt);
 
