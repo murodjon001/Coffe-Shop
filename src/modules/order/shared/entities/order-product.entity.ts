@@ -10,6 +10,7 @@ export class OrderProductEntity extends BaseEntity {
 
   constructor(params: IPrismaOrderProduct) {
     super(params);
+    this.quantity = params.quantity;
   }
 
   withProduct(params: IProductBaseEntity) {

@@ -32,12 +32,12 @@ export class OrderAdministrationRepository {
       const total = await this.prisma.order.count({ where: { clientId } });
 
       return {
-        total,
         data: orders.map((el) => {
           return new OrderEntity(el)
             .withClient(el.client)
             .withOrderProduct(el.orderProducts);
         }),
+        total,
       };
     } catch (error) {
       this.logger.error(error);

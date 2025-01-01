@@ -49,6 +49,5 @@ export class OrderEntity extends BaseEntity {
 
   update(dto: UpdateOrderDto) {
     this.orderStatus = dto.orderStatus || this.orderStatus;
-    this.clientNote = dto.clientNote || this.clientNote;
   }
 }
