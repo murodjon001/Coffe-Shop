@@ -13,49 +13,49 @@ Follow the steps below to set up and run the backend for the Coffee Shop Network
 
 1. **Clone the Repository**  
    Clone the project repository using the following command:
-   ```bash
+```bash
    git clone git@github.com:murodjon001/Coffe-Shop.git
-   ```
+```
 
 2 **Install Dependencies**
   Navigate to the project directory and install the required dependencies:
-  ```bash
+```bash
    npm install
-   ```
+```
 
 3 **Set Up Environment Variables**
   Create a .env file in the root directory and copy the content from .env.example:
-  ```bash
+```bash
    cp .env.example .env
-   ```
+```
 
 4 **Start Docker Services**
   Start the required services using Docker Compose:   
-  ```bash 
+```bash 
   docker compose up -d
-  ```
+```
 
  5 **Apply Database Migrations**
    Deploy the database migrations: 
-   ```bash 
+  ```bash 
    npx prisma migrate deploy
-   ```
+  ```
 
 6 **Create a Super User**
   Seed the database to create a super user:   
-  ```bash
+```bash
   npx prisma db seed
  ```
 
 7 **Verify Super User Creation**
   Use Prisma Studio to verify that the super user has been created:
-  ```bash
+```bash
   npx prisma studio
 ```
 
 8 **Run the Application**
   Start the application in development mode:
-  ```bash
+```bash
   npm run start:dev
 ```
 
