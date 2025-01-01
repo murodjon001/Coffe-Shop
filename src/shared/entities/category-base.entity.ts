@@ -13,5 +13,6 @@ export class CategoryBaseEntity extends BaseEntity {
     this.title = params.title;
     this.image = params.image;
     this.coffeeShopId = params.coffeeShopId;
+    this.isActive = params.isActive;
   }
 }
