@@ -25,7 +25,7 @@ export class MenuAdministrationService {
   }
 
   async getMenusByShopId(shopId: string) {
-    await this.repository.findByCoffeeShopId(shopId);
+    return await this.repository.findByCoffeeShopId(shopId);
   }
 
   async addProductsToMenu(dto: AddProductToMenuDto) {
